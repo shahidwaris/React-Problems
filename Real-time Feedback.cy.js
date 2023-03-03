@@ -1,4 +1,5 @@
 import App from '../../src/App' 
+import './App.css'
 /// <reference types="Cypress" />
 
 describe('Realtime-error-feed.cy.jsx', () => {

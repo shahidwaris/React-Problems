@@ -6,7 +6,7 @@ describe('App', () => {
       cy.mount(<App/>);
     });
 
-// Checking that it should render the form fields
+    // Checking that it should render the form fields
     it('should render the form fields', () => {
       cy.get('input[name="name"]').should('exist');
       cy.get('input[name="age"]').should('exist');
@@ -41,32 +41,36 @@ describe('App', () => {
     
     //Checking that it should log form data on submit
       it('should log form data on submit', () => {
-        const spy = cy.spy(console, 'log');
+        // const spy = cy.spy(console, 'log');
+        cy.window().then((win) => {
+          cy.spy(win.console, "log").as("consoleLog");
+        });
         cy.get('button').contains('Add More..').click()
         cy.get(':nth-child(1) > [name="name"]').type('Ravi');
         cy.get(':nth-child(1) > [name="age"]').type('40');
         cy.get(':nth-child(2) > [name="name"]').type('John');
         cy.get(':nth-child(2) > [name="age"]').type('25');
-        
         cy.get('button').contains('Submit').click();
-      
-        cy.wrap(spy).should('have.been.called', [{ name: 'Ravi', age: '40' }]);
-        cy.wrap(spy).should('have.been.called', [{ name: 'John', age: '25' }]);
+       
+        cy.get("@consoleLog").should("have.been.calledWithMatch", [{name: 'Ravi', age: '40'},{name: 'John',age: '25'}]);
       });
+      
 
       //Checking that it should update the form data with new details
       it('should update the form data', () => {
-        const spy = cy.spy(console, 'log');
+        cy.window().then((win) => {
+          cy.spy(win.console, "log").as("consoleLog");
+        });
 
-        cy.get(':nth-child(1) > [name="name"]').type('John');
-        cy.get(':nth-child(1) > [name="age"]').type('25');
+        cy.get(':nth-child(1) > [name="name"]').type('Ravi');
+        cy.get(':nth-child(1) > [name="age"]').type('40');
         cy.get('button').contains('Submit').click();
-        cy.wrap(spy).should('have.been.called', [{ name: 'John', age: '25' }]);
+        cy.get("@consoleLog").should("have.been.calledWithMatch", [{name: 'Ravi', age: '40'}])
 
         cy.get(':nth-child(1) > [name="name"]').clear().type('Alex');
         cy.get(':nth-child(1) > [name="age"]').clear().type('32');
         cy.get('button').contains('Submit').click();
-        cy.wrap(spy).should('have.been.called', [{ name: 'Alex', age: '32' }]);
+        cy.get("@consoleLog").should("have.been.calledWithMatch", [{name: 'Alex', age: '32'}])
       });
     
   });

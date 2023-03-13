@@ -13,18 +13,18 @@ describe('App', () => {
     });
   
     it('updates the name field', () => {
-      const name = 'John Doe';
+      const name = 'Thomas Edward Stark';
       cy.get('input[type="text"]').type(name).should('have.value', name);
     });
   
     it('updates the email field', () => {
-      const email = 'john.doe@example.com';
+      const email = 'tonystark@starkindustries.com';
       cy.get('input[type="email"]').type(email).should('have.value', email);
     });
   
     it('displays the updated values in the output', () => {
-      const name = 'John Doe';
-      const email = 'john.doe@example.com';
+      const name = 'Thomas Edward Stark';
+      const email = 'tonystark@starkindustries.com';
       cy.get('input[type="text"]').type(name);
       cy.get('input[type="email"]').type(email);
       cy.get('.output').contains(`Name - ${name}`);
